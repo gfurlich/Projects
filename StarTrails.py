@@ -21,6 +21,7 @@ import random
 import numpy as np
 import sympy as sp
 from matplotlib import pyplot as plt
+from matplotlib.backends.backend_pdf import PdfPages
 import time
 import math
 from colorsys import hsv_to_rgb
@@ -118,21 +119,32 @@ star_size = []
 star_color = []
 star_alpha = []
 
+# Background colors for the sky:
+#bg = '#152033'
+bg = '#000814'
+
 for j in range(0,n_stars):
 
 	print 'Rendering Trail for Star {0}\r'.format(j+1),
 
 	# Star Random Size and Alpha :
+
+	# Uniform Distribution Sampling :
 	#star_size.append(float(random.uniform(.001,1)))
 	#star_alpha.append(float(random.uniform(.5,1)))
-	star_size.append(float(random.gauss(.01,.1) ) )
-	star_alpha.append(float(random.gauss(.8,.05) ) )
+
+	# Gaussian Distribution Sampling :
+	#star_size.append(float(random.gauss(.01,.1) ) )
+	star_alpha.append(float(random.gauss(.9,.01) ) )
+
+	# Beta Distribution Sampling (skewed distribution):
+	star_size.append( random.betavariate(2,4) )	
 
 	# Star Random Color Variation from White :
 	# White in HSV (0,0,1)
 	h = random.uniform(0, 1)
-	s = random.uniform(0,.25)
-	v = random.uniform(0.9, 1)
+	s = random.uniform(0,.1)
+	v = random.uniform(0.95, 1)
 
 	# Star Random Color Variation from Green :
 	# White in HSV (0,0,1)
@@ -151,12 +163,13 @@ for j in range(0,n_stars):
 		star_y[j].append( rotational_axis_y + step_y)
 
 	# Plot Star Trail :
-	plt.plot(star_x[j], star_y[j], '.', markersize=star_size[-1],  alpha=star_alpha[-1], color=(r,g,b))
+	#plt.plot(star_x[j], star_y[j], '.', markersize=star_size[-1],  alpha=star_alpha[-1], color=(r,g,b))
+	plt.plot(star_x[j], star_y[j], '.', markersize = star_size[-1], markeredgewidth = star_size[-1], color=(r,g,b))
 
 #--- Plot ---#
 
 # Save Star Trail Plot :
-print "Rendering Star Trail Figure : StarTrails_"+date+".png\r"
+print "Rendering Star Trail Figure : Star_Trails_"+date+".png\r"
 
 # Remove Frame and Axes :
 ax = star_trail.gca()
@@ -167,9 +180,9 @@ ax.set_yticks([])
 plt.axis('off')
 
 # High Quality:
-star_trail.savefig("StarTrails_"+date+".png", dpi=1000, facecolor='#152033', bbox_inches='tight', pad_inches=0)
+star_trail.savefig("Star_Trails_"+date+".png", dpi=1000, facecolor = bg, bbox_inches='tight', pad_inches=0)
 
 # Fast, Low Quality :
-#star_trail.savefig("StarTrails_"+date+".png", facecolor='#152033', bbox_inches='tight', pad_inches=0)
+#star_trail.savefig("Star_Trails_"+date+".png", facecolor='#152033', bbox_inches='tight', pad_inches=0)
 
 #--- End of Script ---#
