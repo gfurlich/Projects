@@ -5,11 +5,11 @@ Comment : git repo of fun coding projects
 
 === Contents ===
 
-1) Star_Trails.py : A python script to create random star positions and a random rotational axis. Then rotate the stars around the axis to make star trails. A image is rendered from the star trails.
+1) StarTrails/StarTrail.py : A python script to create random star positions and a random rotational axis. Then rotate the stars around the axis to make star trails. A image is rendered from the star trails.
 
-Execution : ./Star_Trails <nstars> <angle>
+	Execution : ./StarTrails <nstars> <angle>
 
-Outputs : Stars_Initial_v<YYYYMMDD>.png
-	Stars_Trails_v<YYYYMMDD>.png
+	Outputs : Stars_Initial_v<YYYYMMDD_HHMMSS>.png
+		Star_Trails_v<YYYYMMDD_HHMMSS>.png
 
 === End of Contents ===
