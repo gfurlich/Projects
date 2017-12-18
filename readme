@@ -9,7 +9,7 @@ Comment : git repo of fun coding projects
 
 	Execution : ./StarTrails <nstars> <angle>
 
-	Outputs : Stars_Initial_v<YYYYMMDD_HHMMSS>.png
-		Star_Trails_v<YYYYMMDD_HHMMSS>.png
+	Outputs : Figures/Stars_Initial_v<YYYYMMDD_HHMMSS>.png
+		Figures/Star_Trails_v<YYYYMMDD_HHMMSS>.png
 
 === End of Contents ===
