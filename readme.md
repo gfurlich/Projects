@@ -1,17 +1,17 @@
 # Projects
 
-	File : Projects/readme
-	Author : Greg Furlich
+File : Projects/readme.md
+Author : Greg Furlich
 
-	Comment : git repo of fun coding projects
+Comment : git repository to showcase fun coding projects of Greg Furlich
 
-## Contents 
+## Star Trails
 
-	1) StarTrails/StarTrail.py : A python script to create random star positions and a random rotational axis. Then rotate the stars around the axis to make star trails. A image is rendered from the star trails.
+StarTrails/StarTrail.py : A python script to create random star positions and a random rotational axis. Then rotate the stars around the axis to make star trails. A image is rendered from the star trails.
 
-		Execution : ./StarTrails <nstars> <angle>
+	Execution : ./StarTrails <n_stars> <rotation_angle>
 
-		Outputs : Figures/Stars_Initial_v<YYYYMMDD_HHMMSS>.png
-		Figures/Star_Trails_v<YYYYMMDD_HHMMSS>.png
+	Outputs : Figures/Stars_Initial_v<YYYYMMDD_HHMMSS>.png
+	Figures/Star_Trails_v<YYYYMMDD_HHMMSS>.png
 
-## End of Contents
+![Star Trails Example Figure](https://github.com/gfurlich/Projects/blob/master/StarTrails/Figures/Star_Trails_example.png)
