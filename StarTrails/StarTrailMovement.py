@@ -23,7 +23,7 @@ import time
 import math
 from colorsys import hsv_to_rgb
 import os, errno
-#import 
+import imageio
 
 #--- Initial Parameters ---#
 
@@ -88,7 +88,7 @@ plt.ylim([0,h])		# Y Range
 
 plt.legend(loc='upper left')
 
-print "Rendering Initial Figure : Figures/Stars_Initial_"+date+".png"
+print "Rendering Initial Figure : Gif_Figures/Stars_Initial_"+date+".png"
 
 plt.savefig("Figures/Stars_Initial_"+date+".png")	# Save Plot
 
@@ -202,5 +202,23 @@ for i in range(1,n_rotations):
 	# Save Plot :
 	star_trail.savefig(out_fig, facecolor = background_color, bbox_inches='tight', pad_inches=0) # Low Quality
 	#star_trail.savefig("Figures/Star_Trails_"+date+".png", dpi=2000, facecolor = background_color, bbox_inches='tight', pad_inches=0)
+
+#--- Convert Figures to GIF ---#
+
+star_gif = []	# Preallocate Gif :
+
+# Combine Images :
+for i in range(1,n_rotations):
+
+	in_fig = out_dir+"Star_Trails_%04d.png" % (i,)
+
+    	star_gif.append(imageio.imread(in_fig))
+
+out_gif = "GIFs/Star_Trail_Movement_%s.gif" % (date,)
+
+print "Rendering Gif : "+out_gif
+
+# Save Gif :
+imageio.mimsave(out_gif, star_gif)
 
 #--- End of Script ---#
