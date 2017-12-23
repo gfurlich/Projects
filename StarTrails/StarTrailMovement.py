@@ -27,6 +27,8 @@ import imageio
 
 #--- Initial Parameters ---#
 
+t_start = time.time()
+
 # date generated :
 #date = time.strftime('v%Y%m%d_%H%M%S')	# with sec percision
 date = time.strftime('v%Y%m%d') # with day percision
@@ -46,7 +48,7 @@ n_stars = int(sys.argv[1])
 rotation_angle = float(sys.argv[2]) * pi / 180
 
 # Steps of Rotation :
-n_rotations = 100
+n_rotations = 400
 
 # Angle Steps :
 delta_angle = rotation_angle / n_rotations 
@@ -108,24 +110,40 @@ for i in range(0,n_stars):
 	star_initial_angle.append( math.atan2( delta_y, delta_x ) )
 	#print 'Star '+str(i+1)+' (Radial Dist, angle) = \t('+str(star_r[i])+', '+str(star_initial_angle[i])+')'
 
-# Initialize Plot :
-star_trail = plt.figure(2, frameon=False)
+# Initialize Star Trail Plot :
+star_trail = plt.figure(2, frameon=False)	
 
 plt.xlim([0,w])		# X Range
 plt.ylim([0,h])		# Y Range
+
+# Calculate Star Rotation :
+for i in range(1,n_rotations):
+
+	print 'Calculating Rotation {:04d} / {:d} \r'.format(i+1,n_rotations),
+
+	for j in range(0,n_stars):
+
+		angle_step = float(delta_angle * i)
+		angle = star_initial_angle[j] + angle_step
+		step_x = star_r[j]*math.cos( angle )
+		step_y = star_r[j]*math.sin( angle )
+		star_x[j].append( rotational_axis_x + step_x)
+		star_y[j].append( rotational_axis_y + step_y)
+
+
+#--- Plot Star Trails ---#
 
 # List for Star Size, Alpha, and Color:
 star_size = []
 star_color_r = []
 star_color_g = []
 star_color_b = []
-#star_alpha = []
-
-# Background colors for the sky:
-background_color = '#000814'
+star_alpha = []
 
 # Randomize Star Attributes :
+print '\nAssigning Randomize Star Attributes...'
 for j in range(0,n_stars):
+
 
 	# Star Random Size and Alpha :
 
@@ -135,7 +153,7 @@ for j in range(0,n_stars):
 
 	# Gaussian Distribution Sampling :
 	#star_size.append(float(random.gauss(.01,.1) ) )
-	#star_alpha.append(float(random.gauss(.9,.01) ) )
+	star_alpha.append( random.betavariate(2,15) )
 
 	# Beta Distribution Sampling 
 	# (0 - 1 skewed distribution towards 0):
@@ -161,22 +179,17 @@ for j in range(0,n_stars):
 	star_color_r.append(r)
 	star_color_g.append(g)
 	star_color_b.append(b)
+		
 
-# Caluculate Star Rotation :
-for i in range(1,n_rotations):
+# Plot Star Trail :
+# with transparent background
+for i in range(1,n_rotations-1):
 
-	print 'Rendering Rotation '+str(i)+' / '+str(n_rotations)+'\r'
+	t_render_start = time.time()
 
 	for j in range(0,n_stars):
-		angle_step = float(delta_angle * i)
-		angle = star_initial_angle[j] + angle_step
-		step_x = star_r[j]*math.cos( angle )
-		step_y = star_r[j]*math.sin( angle )
-		star_x[j].append( rotational_axis_x + step_x)
-		star_y[j].append( rotational_axis_y + step_y)
 
-		# Plot Star Trail :
-		plt.plot(star_x[j], star_y[j], '.', markersize = star_size[j], markeredgewidth = star_size[j], alpha=.5, color=(star_color_r[j],star_color_g[j],star_color_b[j]))
+		plt.plot(star_x[j][i], star_y[j][i], '.', markersize = star_size[j], markeredgewidth = star_size[j], alpha=star_alpha[j], color=(star_color_r[j],star_color_g[j],star_color_b[j]))
 
 	# Remove Plot Frame and Axes :
 	ax = star_trail.gca()
@@ -197,28 +210,50 @@ for i in range(1,n_rotations):
     		if e.errno != errno.EEXIST:
        			raise
 
-	#print out_fig
+	#print out_fiG
 
 	# Save Plot :
-	star_trail.savefig(out_fig, facecolor = background_color, bbox_inches='tight', pad_inches=0) # Low Quality
-	#star_trail.savefig("Figures/Star_Trails_"+date+".png", dpi=2000, facecolor = background_color, bbox_inches='tight', pad_inches=0)
+	#star_trail.savefig(out_fig, dpi=300, facecolor = background_color, bbox_inches='tight', pad_inches=0)
+	star_trail.savefig(out_fig, dpi=300, transparent=True, bbox_inches='tight', pad_inches=0)
 
-#--- Convert Figures to GIF ---#
+	# Clear Figure
+	#plt.clf()
+	t_render_elapsed = time.time() - t_render_start
 
-star_gif = []	# Preallocate Gif :
+	print 'Rendering Rotation {:04d} / {:d} \t {:f} secs\r' %(i,n_rotations,t_render_elapsed),
 
-# Combine Images :
-for i in range(1,n_rotations):
+#--- Create Background ---#
 
-	in_fig = out_dir+"Star_Trails_%04d.png" % (i,)
 
-    	star_gif.append(imageio.imread(in_fig))
+# Background colors for the sky:
+#background_color = '#000814'
 
-out_gif = "GIFs/Star_Trail_Movement_%s.gif" % (date,)
+#out_background = out_dir+"Star_Background.png"
 
-print "Rendering Gif : "+out_gif
+#os.system('convert -size %ix%i xc:%s %s' % (w, h, background_color, out_background,)
 
-# Save Gif :
-imageio.mimsave(out_gif, star_gif)
+#--- Create GIF ---#
+
+# Define GIF Name :
+out_gif = 'GIFs/Star_Trail_Movement_%s.gif' % (date,)
+
+print "Rendering GIF : "+out_gif
+
+# Use ImageMagick and System commands:
+os.system('convert '+out_dir+'Star_Trails_*.png '+out_gif)
+
+# Add Background :
+os.system('convert '+out_gif+' -coalesce   -background xc:'+background_color+' -alpha remove -layers Optimize '+out_gif[:-4]+'_w_bg.gif')
+
+# GIF Size :
+gif_size = subprocess.check_output('du -sh '+out_gif)
+print 'GIF Size : %s' % (gif_size,)
+
+#--- Time Elapsed ---#
+
+# Total time elapsed :
+t_total = time.time() - t_start
+
+print 'total time : %f secs' % (t_total,)
 
 #--- End of Script ---#
