@@ -24,4 +24,4 @@ StarTrails/StarTrailMovement.py : A python script simulate star trails for a ran
 	Gif_Figures/Star_Trail_Movement_v<YYYYMMDD>/Stars_Trails_<IIII>.png
 	GIFs/Star_Trail_v<YYYYMMDD>.gif
 
-![Star Trail Movement Example GIF](https://github.com/gfurlich/Projects/blob/master/StarTrails/GIFs/Star_Trails_Movement_example.gif)
+![Star Trail Movement Example GIF](https://github.com/gfurlich/Projects/blob/master/StarTrails/GIFs/Star_Trail_Movement_example.gif)
