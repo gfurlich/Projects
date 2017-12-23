@@ -24,6 +24,7 @@ import math
 from colorsys import hsv_to_rgb
 import os, errno
 import imageio
+import subprocess
 
 #--- Initial Parameters ---#
 
@@ -220,7 +221,7 @@ for i in range(1,n_rotations-1):
 	#plt.clf()
 	t_render_elapsed = time.time() - t_render_start
 
-	print 'Rendering Rotation {:04d} / {:d} \t {:f} secs\r' %(i,n_rotations,t_render_elapsed),
+	print 'Rendering Rotation {:04d} / {:d} \t ( {:f} seconds )\r'.format(i,n_rotations,t_render_elapsed,)
 
 #--- Create Background ---#
 
