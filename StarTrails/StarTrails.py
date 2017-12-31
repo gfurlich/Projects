@@ -8,11 +8,12 @@ Purpose : Simulate Star Trails for a random array of nstars around a randomly pl
 
 Execution : StarTrails.py <n_stars> <rotation_angle>
 
-Example Execution : StarTrails.py 20 30
+Example Execution : ./StarTrails.py 20 30
 
 '''
 
 #--- Start of Script ---#
+
 
 #--- Importing Python Modules ---#
 
@@ -24,6 +25,8 @@ import math
 from colorsys import hsv_to_rgb
 
 #--- Initial Parameters ---#
+
+t_start = time.time()
 
 # date generated :
 date = time.strftime('v%Y%m%d_%H%M%S')	# with sec percision
@@ -48,7 +51,7 @@ delta_angle = .01	# in degrees
 delta_angle =  delta_angle * pi / 180	# Convert to radians
 
 # Steps of Rotation :
-n_rotations = rotation_angle / delta_angle
+n_rotations = int( rotation_angle / delta_angle )
 
 #--- Star Initial Positions ---#
 #print 'Star Initial Positions :'
@@ -64,10 +67,32 @@ star_initial_y =  []	# stars y position list
 rotational_axis_x = random.uniform(0,w)
 rotational_axis_y = random.uniform(0,h)
 
+# Find max radius from rotational axis to corners
+
+def radialDistance(x1,y1,x2,y2):
+	'''
+	Function for determining the radial distance between two points using pythagreons theorem.
+	'''
+	r = math.sqrt( math.pow(x2 - x1, 2) + math.pow(y2 - y1, 2) )
+	return r ;
+
+r1 = radialDistance( 0,  0, rotational_axis_x, rotational_axis_y)
+r2 = radialDistance( 0,  w, rotational_axis_x, rotational_axis_y)
+r3 = radialDistance( h,  0, rotational_axis_x, rotational_axis_y)
+r4 = radialDistance( h,  w, rotational_axis_x, rotational_axis_y)
+
+r = [r1, r2, r3, r4]
+
+r.sort()
+
+r_max = r[-1]
+
+#print rotational_axis_x, rotational_axis_y, r
+
 # Randomly Defining Stars Position :
 for i in range(0,n_stars):
-	star_initial_x.append(random.uniform(-1.1 * w, 1.1 * w))
-	star_initial_y.append(random.uniform(-1.1 * h, 1.1 * h))
+	star_initial_x.append( random.uniform( rotational_axis_x - r_max, rotational_axis_x + r_max) )
+	star_initial_y.append( random.uniform( rotational_axis_y - r_max , rotational_axis_y + r_max) )
 
 	#print 'Star '+str(i+1)+' (star_x, star_y) = \t('+str(star_initial_x[i])+','+str(star_initial_y[i])+')'
 
@@ -191,5 +216,12 @@ star_trail.savefig("Figures/Star_Trails_"+date+".png", dpi=2000, facecolor = bac
 
 # Fast, Low Quality :
 #star_trail.savefig("Star_Trails_"+date+".png", facecolor='#152033', bbox_inches='tight', pad_inches=0)
+
+#--- Time Elapsed ---#
+
+# Total time elapsed :
+t_total = time.time() - t_start
+
+print 'total time : %f secs' % (t_total)
 
 #--- End of Script ---#
