@@ -18,10 +18,7 @@ Example Execution : StarTrails.py 20 30
 
 import sys
 import random
-import numpy as np
-import sympy as sp
 from matplotlib import pyplot as plt
-from matplotlib.backends.backend_pdf import PdfPages
 import time
 import math
 from colorsys import hsv_to_rgb
@@ -37,8 +34,8 @@ pi = 3.14159265359
 # Defining Rectangular window for plot :
 # 16:9 aspect ratio
 
-w = 1600	# width
-h = 900		# height
+w = 16		# width
+h = 9		# height
 
 # Number of Stars :
 n_stars = int(sys.argv[1])
@@ -46,11 +43,12 @@ n_stars = int(sys.argv[1])
 # Angle of Rotation (in Radians):
 rotation_angle = float(sys.argv[2]) * pi / 180
 
-# Steps of Rotation :
-n_rotations = 10000
+# Rotational Angle Steps :
+delta_angle = .01	# in degrees
+delta_angle =  delta_angle * pi / 180	# Convert to radians
 
-# Angle Steps :
-delta_angle = rotation_angle / n_rotations 
+# Steps of Rotation :
+n_rotations = rotation_angle / delta_angle
 
 #--- Star Initial Positions ---#
 #print 'Star Initial Positions :'
@@ -62,16 +60,16 @@ star_y = [[] for _ in xrange(n_stars)]	# stars y position nested list
 star_initial_x =  []	# stars x position list
 star_initial_y =  []	# stars y position list
 
+# Defining Random Rotational Axis :
+rotational_axis_x = random.uniform(0,w)
+rotational_axis_y = random.uniform(0,h)
+
 # Randomly Defining Stars Position :
 for i in range(0,n_stars):
 	star_initial_x.append(random.uniform(-1.1 * w, 1.1 * w))
 	star_initial_y.append(random.uniform(-1.1 * h, 1.1 * h))
 
 	#print 'Star '+str(i+1)+' (star_x, star_y) = \t('+str(star_initial_x[i])+','+str(star_initial_y[i])+')'
-
-# Defining Random Rotational Axis :
-rotational_axis_x = random.uniform(0,w)
-rotational_axis_y = random.uniform(0,h)
 
 #--- Plot Initial Star and Rotational Positions ---#
 
@@ -146,15 +144,15 @@ for j in range(0,n_stars):
 
 	# Star Random Color Variation from White :
 	# White in HSV (0,0,1)
-	if ( j % 100 == 0 ) :
-		h = random.uniform(0, 1) 		# Hue
-		s = random.betavariate(1,2)		# Saturation
-		v = 1 -  random.betavariate(1,2)	# Value
+	if ( j % 50 == 0 ) :
+		h = random.uniform(0, 1) 	# Hue
+		s = random.uniform(0, 1)	# Saturation
+		v = random.uniform(0, 1)	# Value
 
 	else :
 		h = random.uniform(0, 1) 		# Hue
-		s = random.betavariate(1,15)		# Saturation
-		v = 1 -  random.betavariate(1,2)	# Value
+		s = random.betavariate(1, 15)		# Saturation
+		v = 1 -  random.betavariate(1, 15)	# Value
 
 	# Give Every # Stars better Color :
 
