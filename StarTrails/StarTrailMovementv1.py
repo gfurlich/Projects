@@ -4,7 +4,7 @@ File : StarTrailMovementv1.py
 Author : Greg Furlich
 Date Created : 12/30/2017
 
-Purpose : Simulate Star Trails for a random array of nstars around a randomly placed rotational axis for a length of a rotation angle. Create figures of each rotations and combine into GIFs using Image Magick.
+Purpose : A python script simulate star trails for a random array of positions for <n_stars> around a randomly positioned rotational axis. The stars are then rotated for a length of a <rotation_angle>. A image of each rotation iteration is rendered and then all iterations are combined into a GIF using Image Magick.
 
 Execution : ./StarTrailMovementv1.py <n_stars> <rotation_angle>
 

@@ -7,18 +7,18 @@ Comment : git repository to showcase fun coding projects of Greg Furlich
 
 ## Star Trails
 
-StarTrails/StarTrail.py : A python script to create random star positions and a random rotational axis. Then rotate the stars around the axis to make star trails. A image is rendered from the star trails.
+*StarTrails/StarTrail.py* : A python script simulate star trails for a random array of positions for <n_stars> around a randomly positioned rotational axis. The stars are then rotated for a length of a <rotation_angle>. A image is rendered from the star trails full rotation.
 
-	Execution : ./StarTrails <n_stars> <rotation_angle>
+	Execution : ./StarTrails.py <n_stars> <rotation_angle>
 
 	Outputs : Figures/Stars_Initial_v<YYYYMMDD_HHMMSS>.png
 	Figures/Star_Trails_v<YYYYMMDD_HHMMSS>.png
 
 ![Star Trails Example Figure](https://github.com/gfurlich/Projects/blob/master/StarTrails/Figures/Star_Trails_example.png)
 
-StarTrails/StarTrailMovement.py : A python script simulate star trails for a random array of <n_stars> around a randomly placed rotational axis for a length of a <rotation_angle>. Create figures of the rotations and combine into GIFs.
+*StarTrails/StarTrailMovementv1.py* : A python script simulate star trails for a random array of positions for <n_stars> around a randomly positioned rotational axis. The stars are then rotated for a length of a <rotation_angle>. A image of each rotation iteration is rendered and then all iterations are combined into a GIF using Image Magick.
 
-	Execution : ./StarTrailsMovement <n_stars> <rotation_angle>
+	Execution : ./StarTrailsMovementv1.py <n_stars> <rotation_angle>
 
 	Outputs : Gif_Figures/Stars_Initial_<YYYYMMDD>.png
 	Gif_Figures/Star_Trail_Movement_v<YYYYMMDD>/Stars_Trails_<IIII>.png

@@ -4,7 +4,7 @@ File : StarTrails.py
 Author : Greg Furlich
 Date Created : 11/24/2017
 
-Purpose : Simulate Star Trails for a random array of nstars around a randomly placed rotational axis for a length of a angle.
+Purpose : A python script simulate star trails for a random array of positions for <n_stars> around a randomly positioned rotational axis. The stars are then rotated for a length of a <rotation_angle>. A image is rendered from the star trails full rotation.
 
 Execution : StarTrails.py <n_stars> <rotation_angle>
 
