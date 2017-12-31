@@ -6,7 +6,7 @@ Date Created : 12/30/2017
 
 Purpose : Simulate Star Trails for a random array of nstars around a randomly placed rotational axis for a length of a rotation angle. Create figures of each rotations and combine into GIFs using Image Magick.
 
-Execution : ./StarTrailMovement.py <n_stars> <rotation_angle>
+Execution : ./StarTrailMovementv1.py <n_stars> <rotation_angle>
 
 Example Execution : ./StarTrailMovementv1.py 200 30
 
@@ -37,8 +37,8 @@ pi = 3.14159265359
 # Defining Rectangular window for plot :
 # 16:9 aspect ratio
 
-w = 1600	# width
-h = 900		# height
+w = 16		# width
+h = 9		# height
 
 # Number of Stars :
 n_stars = int(sys.argv[1])
@@ -47,7 +47,7 @@ n_stars = int(sys.argv[1])
 rotation_angle = float(sys.argv[2]) * pi / 180
 
 # Angle Steps :
-delta_angle = .2
+delta_angle = .1
 delta_angle = delta_angle * pi / 180	# convert to radians
 
 # Steps of Rotation :
@@ -63,16 +63,38 @@ star_y = [[] for _ in xrange(n_stars)]	# stars y position nested list
 star_initial_x =  []	# stars x position list
 star_initial_y =  []	# stars y position list
 
-# Randomly Defining Stars Position :
-for i in range(0,n_stars):
-	star_initial_x.append(random.uniform(-2 * w, 2 * w))
-	star_initial_y.append(random.uniform(-2 * h, 2 * h))
-
-	#print 'Star '+str(i+1)+' (star_x, star_y) = \t('+str(star_initial_x[i])+','+str(star_initial_y[i])+')'
-
 # Defining Random Rotational Axis :
 rotational_axis_x = random.uniform(0,w)
 rotational_axis_y = random.uniform(0,h)
+
+# Find max radius from rotational axis to corners
+
+def radialDistance(x1,y1,x2,y2):
+	'''
+	Function for determining the radial distance between two points using pythagreons theorem.
+	'''
+	r = math.sqrt( math.pow(x2 - x1, 2) + math.pow(y2 - y1, 2) )
+	return r ;
+
+r1 = radialDistance( 0,  0, rotational_axis_x, rotational_axis_y)
+r2 = radialDistance( 0,  w, rotational_axis_x, rotational_axis_y)
+r3 = radialDistance( h,  0, rotational_axis_x, rotational_axis_y)
+r4 = radialDistance( h,  w, rotational_axis_x, rotational_axis_y)
+
+r = [r1, r2, r3, r4]
+
+r.sort()
+
+r_max = r[-1]
+
+#print rotational_axis_x, rotational_axis_y, r
+
+# Randomly Defining Stars Position :
+for i in range(0,n_stars):
+	star_initial_x.append( random.uniform( rotational_axis_x - r_max, rotational_axis_x + r_max) )
+	star_initial_y.append( random.uniform( rotational_axis_y - r_max , rotational_axis_y + r_max) )
+
+	#print 'Star '+str(i+1)+' (star_x, star_y) = \t('+str(star_initial_x[i])+','+str(star_initial_y[i])+')'
 
 #--- Plot Initial Star and Rotational Positions ---#
 
@@ -143,13 +165,13 @@ star_color_b = []
 star_alpha = []
 
 # Randomize Star Attributes :
-print '\nAssigning Randomize Star Attributes...'
+print '\nAssigning Randomized Star Attributes...'
 for j in range(0,n_stars):
 
 	# Star Alpha (Transparency) :
 	# Beta Distribution Sampling 
 	# (0 - 1 skewed distribution towards 0):
-	star_alpha.append( random.betavariate(2,15) )
+	star_alpha.append( 1 - random.betavariate(2,15) )
 
 	# Star Size :
 	star_size.append( random.betavariate(2,4) )	
@@ -196,10 +218,6 @@ for i in range(0,n_rotations-1):
 		# Plot Star Position
 		 plt.plot(star_x[j][i], star_y[j][i], '.', markersize = star_size[j], markeredgewidth = star_size[j], alpha=star_alpha[j], color=(star_color_r[j],star_color_g[j],star_color_b[j]))
 
-	# Set Axes :
-	plt.xlim([0,w])		# X Range
-	plt.ylim([0,h])		# Y Range
-
 	# Remove Plot Frame and Axes :	
 	ax = star_trail.gca()
 	ax.set_frame_on(False)
@@ -212,13 +230,13 @@ for i in range(0,n_rotations-1):
 	out_fig = out_dir+"Star_Trails_%04d.png" % (i,)
 
 	# Save Plot w/ Colored Background :
-	star_trail.savefig(out_fig, dpi=300, facecolor = background_color, bbox_inches='tight', pad_inches=0)
+	star_trail.savefig(out_fig, dpi=500, facecolor = background_color, bbox_inches='tight', pad_inches=0)
 
 	# Save Plot w/ Transparent Background :
 	#star_trail.savefig(out_fig, dpi=300, transparent=True, bbox_inches='tight', pad_inches=0)
 
 	# Clear Figure to remove trail for each image
-	plt.clf()
+	#plt.clf()
 
 	# Render Time Elapsed
 	t_render_elapsed = time.time() - t_render_start
@@ -255,6 +273,6 @@ os.system('du -sh '+out_gif)
 # Total time elapsed :
 t_total = time.time() - t_start
 
-print 'total time : %f secs' % (t_total,)
+print 'total time : %f secs' % (t_total)
 
 #--- End of Script ---#
