@@ -25,3 +25,5 @@ Comment : git repository to showcase fun coding projects of Greg Furlich
 	GIFs/Star_Trail_v<YYYYMMDD>.gif
 
 ![Star Trail Movement Example GIF](https://github.com/gfurlich/Projects/blob/master/StarTrails/GIFs/Star_Trail_Movement_example.gif)
+
+This does create large GIF files and takes a long time, hence version 2.
