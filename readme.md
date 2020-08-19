@@ -3,6 +3,10 @@
 ### File : Projects/readme.md
 ### Author : Greg Furlich
 
+## Digital Research Journal ##
+
+A static website created using Jekyll for the purpose of a digital research journal. Contains the markdown, html, and sass files used to format and design the website using Jekyll.
+
 ## PyRoot ##
 
 Example jupyter notebook for generating, plotting, and fitting data with PyRoot and Scipy.

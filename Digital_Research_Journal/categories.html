@@ -1,0 +1,39 @@
+---
+layout: default
+permalink: /categories/
+title: Categories
+---
+
+{% assign sortedcats = site.categories | sort %}
+
+<toc id="Table of Contents">
+  <h2> Digital Journal Categories :</h2>
+  <ol>
+    {% for category in sortedcats %}
+  {% capture category_name %}{{ category | first }}{% endcapture %}
+    <h4>
+      <li><a href="#{{ category_name }}">{{ category_name }}</a> </li>
+    </h4>
+  {% endfor %}
+</ol>
+</toc>
+<p></p>
+<p></p>
+
+<div id="archives">
+{% for category in sortedcats %}
+  <div class="archive-group">
+    {% capture category_name %}{{ category | first }}{% endcapture %}
+    <div id="{{category_name}}">
+    <p></p>
+    <h2 class="category-head">{{ category_name }}</h3>
+      <a name="{{ category_name | slugize }}"></a>
+      {% for post in site.categories[category_name] %}
+      <article class="archive-item">
+        <h4><a href="{{ site.baseurl }}{{ post.url }}">{{post.title}}</a></h4>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+{% endfor %}
+</div>
